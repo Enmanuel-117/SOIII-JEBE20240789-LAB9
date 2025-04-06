@@ -1,0 +1,2 @@
+ansible windows -m ansible.windows.win_copy -a "src=C:/Users/ansible2/Desktop/Prueba.txt dest=C:/Users/ansible2/Documents/Prueba.txt remote_src=yes" -vvvv
+ansible linux -i /etc/ansible/hosts -m reboot --become
