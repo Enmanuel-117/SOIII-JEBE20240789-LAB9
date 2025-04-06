@@ -1,0 +1,38 @@
+cd
+cd /etc/ansible
+ls
+sudo nano install_notepad.yml
+---------------------------------------------
+
+- name: Instalar Notepad++ en Windows
+  hosts: windows
+  tasks:
+    - name: Descargar el instalador de Notepad++
+      ansible.windows.win_get_url:
+        url: https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.5.6/npp.8.5.6.Installer.exe
+        dest: C:/Users/ansible2/Downloads/npp_installer.exe
+
+    - name: Ejecutar el instalador con PowerShell usando Start-Process
+      ansible.windows.win_shell: |
+        Start-Process -FilePath "C:/Users/ansible2/Downloads/npp_installer.exe" -ArgumentList "/S" -Wait
+
+---------------------------------------------
+ansible-playbook -i /etc/ansible/hosts /etc/ansible/install_notepad.yml
+
+sudo nano update_repos.yml
+
+---------------------------------------------
+- name: Actualizar repositorios del sistema
+  hosts: linux
+  become: yes
+  tasks:
+    - name: Actualizar lista de repositorios
+      ansible.builtin.shell:
+        cmd: apt update
+
+    - name: Actualizar paquetes instalados
+      ansible.builtin.shell:
+        cmd: apt upgrade -y
+
+---------------------------------------------
+ansible-playbook -i /etc/ansible/hosts /etc/ansible/update_repos.yml
